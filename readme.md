@@ -15,6 +15,5 @@ With rust being used due to its speed (and me wanting to learn how tf to use it)
 
 ## *Possible Future Plans*
 None of this shit is fleshed out but there are a few things I would like to look into
-> LLM data extraction (Look I dont like llms but given this project is supposed to be running localy and I have been in a situaiton where Ill remember something like 'Oh ye, Im busy on x but not on y" but not being able to conventinal search it, LLMs might actually be a valid solution)
-<br/>
-> Plugins system (I want there to be someway to basicly create your own "APIs" so the official one could have maximum love but if someone needs something niche it doesnt harm the ecosystem)
+- LLM data extraction (Look I dont like llms but given this project is supposed to be running localy and I have been in a situaiton where Ill remember something like 'Oh ye, Im busy on x but not on y" but not being able to conventinal search it, LLMs might actually be a valid solution)
+- Plugins system (I want there to be someway to basicly create your own "APIs" so the official one could have maximum love but if someone needs something niche it doesnt harm the ecosystem)
