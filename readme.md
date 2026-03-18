@@ -1,17 +1,17 @@
 ## General Philosophy
-This project is born of the fact that I struggle to remember the most basic shit
-On far too many accasion I have just forzen up when I forget the irl name of an online friend iv known for 5+ years
-Or I feel like shit after forgeting its family member's birthday and i didnt even buy flowers
+This project is born of the fact that I struggle to remember the most basic shit<br>
+On far too many accasion I have just forzen up when I forget the irl name of an online friend iv known for 5+ years<br>
+Or I feel like shit after forgeting its family member's birthday and i didnt even buy flowers<br>
 
-The goal of this project is to act as a secondary memory/ formated notes system
-Instead of having to have pages of birthdays and middle names and favorite colors
-All the data can be written down in a single place and just as quickly recollected
+The goal of this project is to act as a secondary memory/ formated notes system<br>
+Instead of having to have pages of birthdays and middle names and favorite colors<br>
+All the data can be written down in a single place and just as quickly recollected<br>
 
-The most importantly this data it all stored securly and localy
-Cause given how this data is indexed, corps would be creaming their pants to get their hands on this shit
+The most importantly this data it all stored securly and localy<br>
+Cause given how this data is indexed, corps would be creaming their pants to get their hands on this shit<br>
 
-The general structure of the project is a single user client/server
-With rust being used due to its speed (and me wanting to learn how tf to use it)
+The general structure of the project is a single user client/server<br>
+With rust being used due to its speed (and me wanting to learn how tf to use it)<br>
 
 ## *Possible Future Plans*
 None of this shit is fleshed out but there are a few things I would like to look into
@@ -21,9 +21,9 @@ None of this shit is fleshed out but there are a few things I would like to look
 
 ## Current Ideas on Naming Things
 
-Connection - The Person ur writing about
-Detail - The specific thing ur writing (Name, Favorite color, etc)
-Card - A simplfied visual way to find connections which contains some details
-Profile - The expanded view showing all details of a connection
-Template - How you custimize what shows up on a card/profile
+Connection - The Person ur writing about<br>
+Detail - The specific thing ur writing (Name, Favorite color, etc)<br>
+Card - A simplfied visual way to find connections which contains some details<br>
+Profile - The expanded view showing all details of a connection<br>
+Template - How you custimize what shows up on a card/profile<br>
 
