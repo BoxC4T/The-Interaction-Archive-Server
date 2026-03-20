@@ -28,6 +28,9 @@ Profile - The expanded view showing all details of a connection<br>
 Template - How you custimize what shows up on a card/profile<br>
 
 ## Folder Structure WIP
+
+probably going to be store in ~/.config/ bc like it just work <br>
+
 ```bash
 tia-server/ 
 ├── index.db (primary db for storing the metadata about each connection/ might also have card details stored here)
@@ -37,7 +40,8 @@ tia-server/
 │       ├── details.db
 │       └── interactions.db
 ├── connection-pfps/
-│   └── uuid of the connection.something (havent decieded yet probobbly just going to ffmpeg it into ones standard in the end)
+│   └── uuid of the connection.something (havent decieded yet probably just going to ffmpeg it into ones standard in the end)
 └── backups/
     └── 1jan25a.iadv (named after day month year (letter noting which order backups where made that day a to z) which the backup was made. Its not really ment to be automaticly loaded so naming is human ment to be as human readable as possible. also its just a zip file of all the other files)
 ```
+made using https://tree.nathanfriend.com/ <br>
