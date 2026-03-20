@@ -28,16 +28,16 @@ Profile - The expanded view showing all details of a connection<br>
 Template - How you custimize what shows up on a card/profile<br>
 
 ## Folder Structure WIP
-
-tia-server/ <br>
-├── index.db (primary db for storing the metadata about each connection/ might also have card details stored here)<br>
-├── config.toml (for storing preferences and the like)<br>
-├── connections/<br>
-│   └── connection folders are named by connection id (uuid)/<br>
-│       ├── details.db<br>
-│       └── interactions.db<br>
-├── connection-pfps/<br>
-│   └── uuid of the connection.something (havent decieded yet probobbly just going to ffmpeg it into ones standard in the end)<br>
-└── backups/<br>
-    └── 1jan25a.iadv (named after day month year (letter noting which order backups where made that day a to z) which the backup was made. Its not really ment to be automaticly loaded so naming is human ment to be as human readable as possible. also its just a zip file of all the other files)<br>
-
+``
+tia-server/ 
+├── index.db (primary db for storing the metadata about each connection/ might also have card details stored here)
+├── config.toml (for storing preferences and the like)
+├── connections/
+│   └── connection folders are named by connection id (uuid)/
+│       ├── details.db
+│       └── interactions.db
+├── connection-pfps/
+│   └── uuid of the connection.something (havent decieded yet probobbly just going to ffmpeg it into ones standard in the end)
+└── backups/
+    └── 1jan25a.iadv (named after day month year (letter noting which order backups where made that day a to z) which the backup was made. Its not really ment to be automaticly loaded so naming is human ment to be as human readable as possible. also its just a zip file of all the other files)
+``
