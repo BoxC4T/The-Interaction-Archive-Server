@@ -60,16 +60,17 @@ https://github.com/diesel-rs/diesel - orm for the dbs<br>
 
 simple enpoints <br>
 ```    
-api/v0/connections/
+/api/v0/connections/
     post - create and returns a connection ID 
     get - returns all IDs of active connections
 
-api/v0/connections/{id}
+/api/v0/connections/{id}
     get - returns metadata about a connection (ie. if it has a pfp set, its current status, etc)
     put - used for updating the status of a connection 
     delete - marks a connection for deletion
 
-api/v0/connections/{id}/pfp
+/api/v0/connections/{id}/pfp/
+    get - returns the pfp of a connection
     put - setting the pfp of a connection
 
 /api/v0/connections/{id}/details/
