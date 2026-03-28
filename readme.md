@@ -40,9 +40,6 @@ tia-server/
 │       └── file.extention
 ├── connection-pfps/
 │   └── uuid.png
-├── plugins/
-│   ├── example.lua
-│   └── example.toml
 └── backups/
     └── 1jan25f.iadv
 ```
@@ -51,9 +48,8 @@ tia.db - main db, should only contain processed data <br>
 config.toml - server configs <br>
 raw-interactions - storage for raw interactions, files are put into folder depending on the import date <br>
 connection-pfps - pfp storage, file is named using the uuid of the connection <br>
-plugins - tbd <br>
 backups - formated in day, month, year, amount of raw interactions contained (f - full, d - imported that day, w - imported that week, m - imported that month, y - imported that year, l - no interactions (lite), c - custom) <br>
-extention comes from the Interaction Archive Data Vault and contains the main db, server config, interactions and pfps.
+extention comes from the Interaction Archive Data Vault and contains the main db, server config, interactions and pfps <br>
 made using https://tree.nathanfriend.com/ <br>
 
 ## Stuff I plan on using
@@ -87,15 +83,83 @@ simple enpoints <br>
 /api/v0/connections/{id}/details/{id}
     put - updates a details value
 
-/api/v0/connections/{id}/interactions/
+/api/v0/interactions/
     post - creates a new interaction
     get - gets all interactions
 
-/api/v0/connections/{id}/interactions/{id}
+/api/v0/interactions/{id}
     put - updates and interaction
 
-/api/v0/connections/{id}/interactions/{id}/raw/
+/api/v0/interactions/{id}/raw/
     get - returns the file the interaction was imported from
 ```
 
 
+## Detail Types
+```
+  string - UTF8 encoded String
+  stringArray - array of strings, has an optional max length field 
+  formatedString - derived from string, has a format field for a regex expresion
+  formatedAtringArray - derived from stringArray, has a format field which can either be a single expresion formating the whole array or an array of expresions formating the corresponding value
+  
+```
+## Detail Structure
+Details are stored as a json object with some default properties
+```JSON
+{
+  "id":"bFirstName",
+  "type":"string",
+  "type_data":{},
+  "confidance":100,
+  "interactions":[
+    "f044e2f2-d472-4296-946d-9d681cc6c461"
+  ],
+  "data":"Lukas"
+}
+```
+id - first letter dictates source of datail (b - builtin, c - custom) <br>
+for type and type_data see Detail Types <br>
+confidance - number from 0 (pure guess) to 100 (known truth), defaults to -1 (unknown) <br>
+interactions - array of interactions where the detail's information comes from <br>
+data - the stored data of the detail, can be in multiple forms depending on its primitive <br>
+
+
+## Builtin Detail 
+
+| detail ID   | Implemented |
+|-------------|-------------|
+| bFirstName  | ([])        |
+| bMiddleName | ([])        |
+| bLastName   | ([])        |
+
+## Interaction Structor
+
+```JSON
+{
+  "id":"f044e2f2-d472-4296-946d-9d681cc6c461",
+  "type":"message",
+  "date_time":"2026-03-28T21:18:37Z",
+  "interaction_source":{
+    "file_dir":"2026.03/chat.zip",
+    "file_metadata":{
+      "type":"zip",
+      "file_loc":"chats/day2.json",
+      "line":"5"
+    }
+  },
+  "summary":"",
+  "raw_txt":"Hey im Lukas"
+}
+```
+id - uuid of the interaction <br>
+type - generic indicator for faster sorting though data <br>
+date_time - single UTC or start, end obj
+interaction_source - file_dir (where a file is located in the raw interactions folder) 
+file_metadata - type (zip or file), zips have a file_loc while files dont, line (single or start, end obj) <br>
+summary - for longer or non text interactions (here is where an llm might be nice) <br>
+raw_txt - raw text pulled from the source file <br>
+
+## Tables
+index - "entry point" table for storing connection IDS (uuid), connection status (active, archived, marked for deletion), if its marked what day it should be deleted, if the connection has a pfp, and probbly template stuff in the future <br>
+interactions - where processed interactions are stored <br>
+uuid - initialized with all the default <br>
