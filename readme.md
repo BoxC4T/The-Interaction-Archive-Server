@@ -32,21 +32,28 @@ Template - How you custimize what shows up on a card/profile and how you add cus
 probably going to be store in ~/.config/ bc like it just work <br>
 
 ```
-tia-server/ 
-├── index.db (primary db for storing the metadata about each connection/ might also have card details stored here)
-├── templates.db (stores all the templates  
-├── config.toml (for storing preferences and the like)
-├── connections/
-│   └── connection folders are named by connection id (uuid)/
-│       ├── details.db
-│       ├── interactions.db
-│       └── raw-interactions/
-│           └── 2026.01/ - folders are name after year.month the interaction was imported 
+tia-server/
+├── tia.db
+├── config.toml
+├── raw-interactions/
+│   └── 2026.01/
+│       └── file.extention
 ├── connection-pfps/
-│   └── uuid of the connection.something (havent decieded yet probably just going to ffmpeg it into ones standard in the end)
+│   └── uuid.png
+├── plugins/
+│   ├── example.lua
+│   └── example.toml
 └── backups/
-    └── 1jan25a.iadv (named after day month year (letter noting which order backups where made that day a to z) which the backup was made. Its not really ment to be automaticly loaded so naming is human ment to be as human readable as possible. also its just a zip file of all the other files)
+    └── 1jan25f.iadv
 ```
+
+tia.db - main db, should only contain processed data <br>
+config.toml - server configs <br>
+raw-interactions - storage for raw interactions, files are put into folder depending on the import date <br>
+connection-pfps - pfp storage, file is named using the uuid of the connection <br>
+plugins - tbd <br>
+backups - formated in day, month, year, amount of raw interactions contained (f - full, d - imported that day, w - imported that week, m - imported that month, y - imported that year, l - no interactions (lite), c - custom) <br>
+extention comes from the Interaction Archive Data Vault and contains the main db, server config, interactions and pfps.
 made using https://tree.nathanfriend.com/ <br>
 
 ## Stuff I plan on using
@@ -54,7 +61,7 @@ made using https://tree.nathanfriend.com/ <br>
 
 https://github.com/tokio-rs/axum - for the rest api<br>
 
-https://github.com/diesel-rs/diesel - orm for the dbs<br>
+https://github.com/diesel-rs/diesel - orm for the db<br>
 
 ## Api Endpoints
 
