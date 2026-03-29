@@ -35,7 +35,6 @@ probably going to be store in ~/.config/ bc like it just work <br>
 tia-server/
 ├── tia.db
 ├── config.toml
-├── version.toml
 ├── raw-interactions/
 │   └── 2026.01/
 │       └── file.extention

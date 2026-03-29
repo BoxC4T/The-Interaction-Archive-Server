@@ -1,8 +1,4 @@
-use std::{
-    fs::{self, File},
-    io::{Result, prelude::*},
-    path::PathBuf,
-};
+use std::{fs, io::Result, path::PathBuf};
 
 extern crate dirs;
 
@@ -31,17 +27,4 @@ pub fn get_pfp_dir(data_dir: &PathBuf) -> PathBuf {
 
 pub fn get_backup_dir(data_dir: &PathBuf) -> PathBuf {
     data_dir.join("backups")
-}
-
-pub fn init_configs() -> Result<()> {
-    let data_dir = get_data_dir();
-    let config;
-    if data_dir.join("config.toml").exists() {
-        let mut file = File::open("config.toml")?;
-        let mut contents = String::new();
-        file.read_to_string(&mut contents)?;
-        config = contents;
-    } else {
-    }
-    Ok(())
 }
