@@ -35,6 +35,7 @@ probably going to be store in ~/.config/ bc like it just work <br>
 tia-server/
 ├── tia.db
 ├── config.toml
+├── version.toml
 ├── raw-interactions/
 │   └── 2026.01/
 │       └── file.extention
@@ -160,6 +161,6 @@ summary - for longer or non text interactions (here is where an llm might be nic
 raw_txt - raw text pulled from the source file <br>
 
 ## Tables
-index - "entry point" table for storing connection IDS (uuid), connection status (active, archived, marked for deletion), if its marked what day it should be deleted, if the connection has a pfp, and probbly template stuff in the future <br>
+connections - "entry point" table for storing connection IDS (uuid), connection status (active, archived, marked for deletion), if its marked what day it should be deleted, if the connection has a pfp, and probbly template stuff in the future <br>
 interactions - where processed interactions are stored <br>
-uuid - initialized with all the default <br>
+details - where details are stored <br>
