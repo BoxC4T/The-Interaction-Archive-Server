@@ -4,5 +4,5 @@ mod file_handler;
 
 fn main() {
     println!("Hello, world!");
-    init_folders().unwrap_err()
+    init_folders().unwrap_err();
 }
