@@ -25,6 +25,8 @@
               rustfmt
               pre-commit
               rustPackages.clippy
+              diesel-cli
+              sqlite
             ];
             RUST_SRC_PATH = rustPlatform.rustLibSrc;
           };

@@ -1,9 +1,5 @@
 [Server Config]
 
-
-
-
-
 [API Config]
 enabled = true
 port = 3000
