@@ -1,5 +1,8 @@
-[Server Config]
+[server_config]
 
-[API Config]
+[api_config]
 enabled = true
 port = 3000
+
+[system]
+setup = false

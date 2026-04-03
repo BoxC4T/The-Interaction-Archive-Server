@@ -1,10 +1,8 @@
-mod db;
+use crate::file_handler::Config;
+
 mod file_handler;
+mod schema;
 
 fn main() {
-    file_handler::init_folders().unwrap();
-
-    file_handler::init_files().unwrap();
-
-    file_handler::init_db();
+    let config: Config = file_handler::load_config().unwrap();
 }
