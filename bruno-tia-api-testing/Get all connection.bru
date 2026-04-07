@@ -1,0 +1,15 @@
+meta {
+  name: Get all connection
+  type: http
+  seq: 2
+}
+
+get {
+  url: http://localhost:3000/connections/
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}

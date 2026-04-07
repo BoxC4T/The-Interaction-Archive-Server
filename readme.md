@@ -96,21 +96,24 @@ simple enpoints <br>
 
 
 ## Detail Types
+# Primatives
 ```
   string - UTF8 encoded String
   stringArray - array of strings, has an optional max length field 
+```
+# Dirivatives
+```
   formatedString - derived from string, has a format field for a regex expresion
   formatedAtringArray - derived from stringArray, has a format field which can either be a single expresion formating the whole array or an array of expresions formating the corresponding value
-  
 ```
 ## Detail Structure
 Details are stored as a json object with some default properties
 ```JSON
 {
   "id":"bFirstName",
-  "type":"string",
-  "type_data":{},
-  "confidance":100,
+  "data_type":"string",
+  "type_metadata":{},
+  "confidence":100,
   "interactions":[
     "f044e2f2-d472-4296-946d-9d681cc6c461"
   ],
@@ -137,18 +140,18 @@ data - the stored data of the detail, can be in multiple forms depending on its 
 ```JSON
 {
   "id":"f044e2f2-d472-4296-946d-9d681cc6c461",
-  "type":"message",
+  "interaction_type":"message",
   "date_time":"2026-03-28T21:18:37Z",
   "interaction_source":{
     "file_dir":"2026.03/chat.zip",
     "file_metadata":{
-      "type":"zip",
+      "file_type":"zip",
       "file_loc":"chats/day2.json",
       "line":"5"
     }
   },
   "summary":"",
-  "raw_txt":"Hey im Lukas"
+  "raw_data":"Hey im Lukas"
 }
 ```
 id - uuid of the interaction <br>
