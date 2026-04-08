@@ -15,8 +15,9 @@ async fn main() {
 
     tracing_subscriber::fmt::init();
 
-    let app = Router::new().route("/connections/", post(db::create_new_connection));
-    // .route("/connections/", get(db::));
+    let app = Router::new()
+        .route("/connections/", post(db::create_new_connection))
+        .route("/connections/", get(db::get_connections));
 
     let mut api_addr: String = "localhost:".to_string();
     api_addr += &config.api_config.port.to_string();

@@ -1,13 +1,12 @@
-use axum::{Json, http::StatusCode};
+use axum::{Json, extract::Query, http::StatusCode};
 use diesel::prelude::*;
-use diesel::{Connection, Insertable, sqlite::SqliteConnection};
-use serde::{Deserialize, Serialize};
+use diesel::{Connection, sqlite::SqliteConnection};
+use serde::Deserialize;
 
 extern crate uuid;
-use serde_json::Value;
 
 use crate::file_handler;
-use crate::schema::connections;
+use crate::schema;
 
 pub fn establish_connection() -> SqliteConnection {
     let data_dir = file_handler::get_data_dir();
@@ -17,86 +16,73 @@ pub fn establish_connection() -> SqliteConnection {
         .unwrap_or_else(|_| panic!("Error connecting to {}", database_url))
 }
 
-#[derive(Serialize, Deserialize, Debug)]
-pub struct Detail {
-    pub id: String,
-    pub data_type: String,
-    pub type_metadata: DetailTypeMetadata,
-    pub confidence: i32,
-    pub interactions: Vec<uuid::Uuid>,
-    pub data: Value,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-pub struct DetailTypeMetadata {
-    pub array_length: u32,
-    pub regex: SingleOrArray,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-pub struct Interaction {
-    pub id: uuid::Uuid,
-    pub interaction_type: String,
-    pub date_time: String,
-    pub interaction_source: InteractionSource,
-    pub summary: String,
-    pub raw_data: String,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-pub struct InteractionSource {
-    file_dir: String,
-    file_metadata: FileMetadata,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-struct FileMetadata {}
-
-#[derive(Serialize, Deserialize, Debug)]
-#[serde(untagged)]
-pub enum SingleOrArray {
-    SingleString(SingleString),
-    ArrayString(ArrayString),
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-pub struct SingleString(String);
-
-#[derive(Serialize, Deserialize, Debug)]
-pub struct ArrayString(Vec<String>);
-
-#[derive(Insertable, Queryable, Selectable)]
-#[diesel(table_name = connections)]
-#[diesel(check_for_backend(diesel::sqlite::Sqlite))]
-pub struct NewConnection {
-    pub id: String,
-    pub status: String,
-}
-
-pub async fn create_new_connection() -> (StatusCode, Json<String>) {
+pub async fn create_new_connection() -> Result<(StatusCode, Json<String>), StatusCode> {
     let conn = &mut establish_connection();
     let con_uuid = uuid::Uuid::new_v4();
 
-    let fresh_connection = NewConnection {
+    let fresh_connection = schema::ConnectionsStruct {
         id: con_uuid.to_string(),
         status: "active".to_string(),
+        removal_datetime: None,
     };
-    diesel::insert_into(connections::table)
+    let db_res = diesel::insert_into(schema::connections::table)
         .values(fresh_connection)
-        .returning(NewConnection::as_returning())
-        .get_result(conn)
-        .unwrap();
+        .returning(schema::ConnectionsStruct::as_returning())
+        .get_result(conn);
 
-    //REMINDER TO FIX STATUS CODES LATER
-    (StatusCode::CREATED, Json(con_uuid.to_string()))
+    match db_res {
+        Ok(result) => Ok((StatusCode::CREATED, Json(result.id))),
+        Err(e) => {
+            eprintln!("Insert error: {:?}", e);
+            Err(StatusCode::INTERNAL_SERVER_ERROR)
+        }
+    }
 }
 
-// pub async fn get_all_connections(
-//     Json(payload): Json<ConnTypeHeader>,
-// ) -> (StatusCode, Json<Vec<String>>) {
-//     let conn = &mut establish_connection();
-// }
+pub async fn get_connections(
+    Query(payload): Query<ConnTypeHeader>,
+) -> Result<(StatusCode, Json<Vec<String>>), StatusCode> {
+    let conn = &mut establish_connection();
 
-struct ConnTypeHeader {
-    conn_type: String,
+    match payload.conn_type {
+        None => {
+            let db_res = schema::connections::dsl::connections
+                .filter(schema::connections::dsl::status.eq("active"))
+                .load::<schema::ConnectionsStruct>(conn);
+
+            match db_res {
+                Ok(result) => Ok((
+                    StatusCode::ACCEPTED,
+                    Json(result.iter().map(|f| f.id.clone()).collect()),
+                )),
+                Err(_) => Err(StatusCode::INTERNAL_SERVER_ERROR),
+            }
+        }
+        Some(conn_type) => {
+            //marked - marked for removal
+            let allowed = ["active", "archived", "marked"];
+
+            if allowed.contains(&conn_type.as_str()) {
+                let db_res = schema::connections::dsl::connections
+                    .filter(schema::connections::dsl::status.eq(conn_type))
+                    .load::<schema::ConnectionsStruct>(conn);
+
+                match db_res {
+                    Ok(result) => Ok((
+                        StatusCode::ACCEPTED,
+                        Json(result.iter().map(|f| f.id.clone()).collect()),
+                    )),
+                    Err(_) => Err(StatusCode::INTERNAL_SERVER_ERROR),
+                }
+            } else {
+                Err(StatusCode::BAD_REQUEST)
+            }
+        }
+    }
+}
+
+#[derive(Deserialize)]
+pub(crate) struct ConnTypeHeader {
+    #[serde(default)]
+    conn_type: Option<String>,
 }
