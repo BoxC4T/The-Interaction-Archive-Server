@@ -76,7 +76,7 @@ pub struct FormatedStringMetadata {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct FormatedStringArrayMetadata {
     pub length: Option<u32>,
-    pub regex: String,
+    pub regex: Regex,
 }
 
 diesel::table! {
@@ -118,10 +118,10 @@ pub enum Regex {
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct SingleRegex {
-    regex: String,
+    pub regex: String,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct MultiRegex {
-    regex: Vec<String>,
+    pub regex: Vec<String>,
 }

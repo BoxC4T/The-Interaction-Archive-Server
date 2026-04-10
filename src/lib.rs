@@ -55,14 +55,16 @@ macro_rules! detail {
             data: None,
         }
     };
-    ($id:expr, $label:expr, FormatedStringArray, regex = $regex:expr) => {
+    ($id:expr, $label:expr, FormatedStringArraySingleRegex, regex = $regex:expr) => {
         schema::DetailsJSON {
             id: $id.into(),
             data_type: schema::DataTypes::FormatedStringArray,
             type_metadata: Some(schema::DetailTypeMetadata::FormatedStringArrayMetadata(
                 schema::FormatedStringArrayMetadata {
                     length: None,
-                    regex: $regex.into(),
+                    regex: schema::Regex::SingleRegex(schema::SingleRegex {
+                        regex: $regex.into(),
+                    }),
                 },
             )),
             confidence: None,
@@ -71,14 +73,54 @@ macro_rules! detail {
             data: None,
         }
     };
-    ($id:expr, $label:expr, FormatedStringArray, length = $length:expr, regex = $regex:expr) => {
+    ($id:expr, $label:expr, FormatedStringArraySingleRegex, length = $length:expr, regex = $regex:expr) => {
         schema::DetailsJSON {
             id: $id.into(),
             data_type: schema::DataTypes::FormatedStringArray,
             type_metadata: Some(schema::DetailTypeMetadata::FormatedStringArrayMetadata(
                 schema::FormatedStringArrayMetadata {
                     length: Some($length),
-                    regex: $regex.into(),
+                    regex: schema::Regex::SingleRegex(schema::SingleRegex {
+                        regex: $regex.into(),
+                    }),
+                },
+            )),
+            confidence: None,
+            interactions: None,
+            label: Some($label.into()),
+            data: None,
+        }
+    };
+
+    ($id:expr, $label:expr, FormatedStringArrayMultiRegex, regex = [$($regex:expr),+ $(,)?]) => {
+        schema::DetailsJSON {
+            id: $id.into(),
+            data_type: schema::DataTypes::FormatedStringArray,
+            type_metadata: Some(schema::DetailTypeMetadata::FormatedStringArrayMetadata(
+                schema::FormatedStringArrayMetadata {
+                    length: None,
+                    regex: schema::Regex::MultiRegex(schema::MultiRegex {
+                        regex: vec![$($regex.to_string()),+],
+                    }),
+                },
+            )),
+            confidence: None,
+            interactions: None,
+            label: Some($label.into()),
+            data: None,
+        }
+    };
+
+    ($id:expr, $label:expr, FormatedStringArrayMultiRegex, length = $length:expr, regex = [$($regex:expr),+ $(,)?]) => {
+        schema::DetailsJSON {
+            id: $id.into(),
+            data_type: schema::DataTypes::FormatedStringArray,
+            type_metadata: Some(schema::DetailTypeMetadata::FormatedStringArrayMetadata(
+                schema::FormatedStringArrayMetadata {
+                    length: Some($length),
+                    regex: schema::Regex::MultiRegex(schema::MultiRegex {
+                        regex: vec![$($regex.to_string()),+],
+                    }),
                 },
             )),
             confidence: None,
