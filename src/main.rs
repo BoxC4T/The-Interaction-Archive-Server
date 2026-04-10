@@ -8,6 +8,7 @@ use crate::file_handler::Config;
 mod db;
 mod file_handler;
 mod schema;
+mod vars;
 
 #[tokio::main]
 async fn main() {

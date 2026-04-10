@@ -7,6 +7,7 @@ extern crate uuid;
 
 use crate::file_handler;
 use crate::schema;
+use crate::vars;
 
 pub fn establish_connection() -> SqliteConnection {
     let data_dir = file_handler::get_data_dir();
@@ -59,10 +60,7 @@ pub async fn get_connections(
             }
         }
         Some(conn_type) => {
-            //marked - marked for removal
-            let allowed = ["active", "archived", "marked"];
-
-            if allowed.contains(&conn_type.as_str()) {
+            if vars::VALID_CONNECTION_STATUS.contains(&conn_type.as_str()) {
                 let db_res = schema::connections::dsl::connections
                     .filter(schema::connections::dsl::status.eq(conn_type))
                     .load::<schema::ConnectionsStruct>(conn);

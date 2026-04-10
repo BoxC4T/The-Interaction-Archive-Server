@@ -5,11 +5,16 @@ meta {
 }
 
 get {
-  url: http://localhost:3000/connections/
+  url: http://localhost:3000/connections/?conn_type=active
   body: none
   auth: inherit
 }
 
+params:query {
+  conn_type: active
+}
+
 settings {
   encodeUrl: true
+  timeout: 0
 }

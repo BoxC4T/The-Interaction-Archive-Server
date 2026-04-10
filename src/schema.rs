@@ -40,12 +40,43 @@ pub struct DetailsStruct {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct DetailsJSON {
     pub id: String,
-    pub data_type: String,
-    pub type_metadata: Value,
+    pub data_type: DataTypes,
+    pub type_metadata: Option<DetailTypeMetadata>,
     pub confidence: Option<i32>,
-    pub interactions: Vec<uuid::Uuid>,
-    pub label: String,
-    pub data: Value,
+    pub interactions: Option<Vec<uuid::Uuid>>,
+    pub label: Option<String>,
+    pub data: Option<Value>,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub enum DataTypes {
+    String,
+    StringArray,
+    FormatedString,
+    FormatedStringArray,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub enum DetailTypeMetadata {
+    StringArrayMetadata(StringArrayMetadata),
+    FormatedStringMetadata(FormatedStringMetadata),
+    FormatedStringArrayMetadata(FormatedStringArrayMetadata),
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct StringArrayMetadata {
+    pub length: Option<u32>,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct FormatedStringMetadata {
+    pub regex: String,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct FormatedStringArrayMetadata {
+    pub length: Option<u32>,
+    pub regex: String,
 }
 
 diesel::table! {
@@ -67,14 +98,30 @@ pub struct InteractionsStruct {
 pub struct InteractionJSON {
     pub id: uuid::Uuid,
     pub interaction_type: String,
-    pub date_time: String,
-    pub interaction_source: InteractionSource,
-    pub summary: String,
-    pub raw_data: String,
+    pub date_time: Option<String>,
+    pub interaction_source: Option<InteractionSource>,
+    pub summary: Option<String>,
+    pub raw_data: Option<String>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct InteractionSource {
     pub file_dir: String,
     pub file_metadata: Value,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub enum Regex {
+    SingleRegex(SingleRegex),
+    MultiRegex(MultiRegex),
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct SingleRegex {
+    regex: String,
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct MultiRegex {
+    regex: Vec<String>,
 }
